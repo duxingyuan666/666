@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>致何嘉城 · 毕业快乐</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        /* ===== 全局重置 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'ZCOOL KuaiLe', 'Comic Sans MS', '华文彩云', 'Microsoft YaHei', cursive, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: gradientFlow 8s ease infinite;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ===== 星星 ===== */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite alternate;
+            opacity: 0;
+        }
+
+        .star::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        /* ===== 花朵装饰 ===== */
+        .flowers-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .flower {
+            position: absolute;
+            animation: sway 3s ease-in-out infinite alternate;
+        }
+
+        .flower .petal {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ff6b9d;
+        }
+
+        .flower .center {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ffd700;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            box-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+        }
+
+        .flower-1 .petal { background: #ff6b9d; }
+        .flower-2 .petal { background: #ffd93d; }
+        .flower-3 .petal { background: #ff8a5c; }
+        .flower-4 .petal { background: #6bcbff; }
+
+        @keyframes sway {
+            0% { transform: rotate(-5deg) scale(1); }
+            100% { transform: rotate(5deg) scale(1.05); }
+        }
+
+        /* ===== 页面主容器 ===== */
+        .scene {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        /* ===== 信封 ===== */
+        .envelope-wrapper {
+            perspective: 1200px;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+
+        .envelope {
+            position: relative;
+            width: 420px;
+            height: 310px;
+            background: linear-gradient(145deg, #f5e6d3, #e8d5c4);
+            border-radius: 14px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5), 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 信封翻盖 */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform-origin: top center;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 3;
+            transform-style: preserve-3d;
+            pointer-events: none;
+        }
+
+        .envelope-flap.open {
+            transform: rotateX(-180deg);
+        }
+
+        .envelope-flap-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            background: linear-gradient(145deg, #f5e6d3, #e8d5c4);
+            clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .envelope-flap-inner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+            clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+            border-radius: 12px;
+        }
+
+        .envelope-flap-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            transform: rotateX(180deg);
+            border-radius: 12px;
+            background: linear-gradient(160deg, #f0dcc8, #e0cbb6);
+            clip-path: polygon(0 0, 50% 58%, 100% 0);
+        }
+
+        /* 信封正面内容 */
+        .envelope-front {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 20px;
+        }
+
+        .envelope-to {
+            font-family: 'ZCOOL KuaiLe', '华文彩云', cursive;
+            font-size: 30px;
+            color: #5c3d2e;
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 6px;
+        }
+
+        .envelope-to-sub {
+            font-family: 'ZCOOL KuaiLe', 'Comic Sans MS', cursive;
+            font-size: 16px;
+            color: #8b6f5e;
+            letter-spacing: 2px;
+        }
+
+        /* 封口贴纸 */
+        .envelope-sticker {
+            position: absolute;
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 4;
+            width: 44px;
+            height: 44px;
+            background: radial-gradient(circle at 35% 35%, #ff6b6b, #e74c3c);
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .envelope-sticker::after {
+            content: '❤';
+            font-size: 20px;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .envelope-sticker.hidden {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        /* 信封底部装饰线 */
+        .envelope-line {
+            position: absolute;
+            bottom: 44px;
+            left: 15%;
+            width: 70%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c4a58e, transparent);
+            border: none;
+        }
+
+        /* ===== 信纸（全屏弹出） ===== */
+        .letter-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            padding: 20px;
+        }
+
+        .letter-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .letter-paper {
+            position: relative;
+            width: 100%;
+            max-width: 520px;
+            max-height: 85vh;
+            max-height: 85dvh;
+            background: linear-gradient(180deg, #fffef5, #fef8e7);
+            border-radius: 12px;
+            padding: 40px 28px 30px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(210, 180, 140, 0.2);
+            transform: scale(0.6) translateY(60px);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .letter-overlay.show .letter-paper {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        /* 信纸横线纹理 */
+        .letter-paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 28px,
+                rgba(200, 180, 160, 0.12) 28px,
+                rgba(200, 180, 160, 0.12) 29px
+            );
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .letter-scroll {
+            position: relative;
+            z-index: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            flex: 1;
+            padding-right: 6px;
+        }
+
+        .letter-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .letter-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .letter-scroll::-webkit-scrollbar-thumb {
+            background: rgba(200, 180, 160, 0.4);
+            border-radius: 10px;
+        }
+
+        .letter-content {
+            font-family: 'ZCOOL KuaiLe', 'Comic Sans MS', 'Microsoft YaHei', sans-serif;
+            font-size: 16px;
+            line-height: 28px;
+            color: #3d2b1f;
+            white-space: pre-wrap;
+            padding-bottom: 10px;
+        }
+
+        /* 信纸关闭按钮 */
+        .letter-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(200, 180, 160, 0.35);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #8b6f5e;
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+        .letter-close-btn:hover,
+        .letter-close-btn:active {
+            background: rgba(200, 180, 160, 0.6);
+            transform: rotate(90deg);
+        }
+
+        /* ===== 提示文字 ===== */
+        .hint {
+            position: fixed;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 14px;
+            z-index: 2;
+            animation: pulseHint 2s ease-in-out infinite;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 0.9; transform: translateX(-50%) translateY(-6px); }
+        }
+
+        /* ===== 响应式（手机） ===== */
+        @media (max-width: 500px) {
+            .envelope {
+                width: 280px;
+                height: 210px;
+            }
+            .envelope-to {
+                font-size: 26px;
+                letter-spacing: 3px;
+            }
+            .envelope-to-sub {
+                font-size: 14px;
+            }
+            .envelope-sticker {
+                width: 38px;
+                height: 38px;
+            }
+            .envelope-sticker::after {
+                font-size: 17px;
+            }
+            .envelope-line {
+                bottom: 36px;
+            }
+            .letter-overlay {
+                padding: 12px;
+            }
+            .letter-paper {
+                padding: 32px 18px 20px;
+                max-height: 80vh;
+                max-height: 80dvh;
+                border-radius: 10px;
+            }
+            .letter-content {
+                font-size: 14px;
+                line-height: 26px;
+            }
+            .hint {
+                font-size: 12px;
+                bottom: 24px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .envelope {
+                width: 240px;
+                height: 180px;
+            }
+            .envelope-to {
+                font-size: 22px;
+            }
+            .letter-content {
+                font-size: 13px;
+                line-height: 24px;
+            }
+        }
+
+        /* 横屏提示 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .letter-paper {
+                max-height: 75vh;
+                max-height: 75dvh;
+                padding: 28px 18px 16px;
+            }
+            .letter-content {
+                font-size: 13px;
+                line-height: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 星星 ===== -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- ===== 花朵 ===== -->
+    <div class="flowers-container" id="flowersContainer"></div>
+
+    <!-- ===== 主场景 ===== -->
+    <div class="scene">
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope" id="envelope">
+                <!-- 翻盖 -->
+                <div class="envelope-flap" id="envelopeFlap">
+                    <div class="envelope-flap-inner"></div>
+                    <div class="envelope-flap-back"></div>
+                </div>
+
+                <!-- 正面 -->
+                <div class="envelope-front">
+                    <div class="envelope-to">To 何嘉城</div>
+                    <div class="envelope-to-sub">✉ 一封特别的信</div>
+                    <div class="envelope-line"></div>
+                </div>
+
+                <!-- 封口贴纸 -->
+                <div class="envelope-sticker" id="sticker"></div>
+
+                <!-- 信封内原本的信纸占位（空白，保证看不见内容） -->
+                <div class="letter" id="letterPlaceholder" style="position:absolute;top:10px;left:12px;right:12px;bottom:10px;background:linear-gradient(180deg,#fffef5,#fef8e7);border-radius:8px;z-index:1;border:1px solid rgba(210,180,140,0.3);opacity:0.6;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 底部提示 ===== -->
+    <div class="hint" id="hint">✨ 点击信封打开 ✨</div>
+
+    <!-- ===== 全屏信纸弹窗 ===== -->
+    <div class="letter-overlay" id="letterOverlay">
+        <div class="letter-paper">
+            <button class="letter-close-btn" id="closeBtn">✕</button>
+            <div class="letter-scroll">
+    <div class="letter-content">To 何嘉城：
+
+    OK啊也是一封迟来的信好吧，怎么说呢，毕业后一直忙到现在，才想出怎么送你一封特别的信。请求谅解❤️
+
+    细细想来，其实在十班中第一个产生联系的其实是你，虽然开头并不怎么好，应该是我的原因吧，当时想着好好学习也想着搞好人际关系，可惜与你相处时在我眼中，只觉得当时的你似乎在隔离我或者说和你性格不符，我认为性格不符的话不管怎么样都很难相处，所以在刚开始时也就得过且过可能有些隔阂，不过后来合租后也是改变了这种想法，只有深度相处才能知道是不是合适的，最后能重归于好也是好事了，算是苦尽甘来了🤓。
+
+    也算是睡了一张床上一年的友谊了，在我眼中，你是个好人😁，然后，还有点美中不足😁。有时你的坦诚待人真的很让人欣赏，相处起来很舒服，但有时也没必要刻意迎合他人了，可能是为了融入进去吧（这些都只是我的看法），去说些不值得的话，兄弟，这没必要，也不值得，有时候正常不放心上的交谈才是更舒服的，兄弟之间不就是这样的。
+
+    其次，知晓你初中一些事和高中一些人对你做的事，我也只能感慨是会有一些傻逼的，对于这些只会拉踩别人的小丑，希望你以后也能不受他们影响，be water, my friend. 做好自己，bro。别害怕，你的屁股后面还有我。
+
+    其实我不怎么会抒情，还是认为提出建议可能更有用吧，希望我描述的我眼中的你和我的建议能够对你有所帮助。不过最后也是必须得发个骚好吧。祝你暑假减肥成功（某人不会已经忘记了吧），瓦里越来越多人叫妈妈😋。打破昔日旧枷锁，方知今日我是我。
+
+    毕业快乐！
+
+
+                                        王俊迪
+                                        7月2号</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 音频（支持循环播放） ===== -->
+    <audio id="bgMusic" preload="auto" loop>
+        <source src="谁.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放
+    </audio>
+
+    <script>
+        // ============================================================
+        // 1. 生成星星
+        // ============================================================
+        (function createStars() {
+            const container = document.getElementById('starsContainer');
+            const count = 120;
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 4 + 2;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
+                star.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(star);
+            }
+        })();
+
+        // ============================================================
+        // 2. 生成花朵
+        // ============================================================
+        (function createFlowers() {
+            const container = document.getElementById('flowersContainer');
+            const positions = [
+                { x: 8, y: 15 }, { x: 85, y: 10 }, { x: 5, y: 70 },
+                { x: 90, y: 75 }, { x: 75, y: 88 }, { x: 20, y: 85 },
+                { x: 92, y: 40 }, { x: 4, y: 42 }
+            ];
+            const colors = ['flower-1', 'flower-2', 'flower-3', 'flower-4'];
+
+            positions.forEach((pos, idx) => {
+                const flower = document.createElement('div');
+                flower.className = 'flower ' + colors[idx % colors.length];
+                flower.style.left = pos.x + '%';
+                flower.style.top = pos.y + '%';
+                const scale = 0.8 + Math.random() * 0.8;
+                flower.style.transform = 'scale(' + scale + ')';
+                flower.style.animationDelay = Math.random() * 2 + 's';
+
+                for (let i = 0; i < 5; i++) {
+                    const petal = document.createElement('div');
+                    petal.className = 'petal';
+                    const angle = (i * 72) * Math.PI / 180;
+                    const radius = 12;
+                    petal.style.left = (10 + Math.cos(angle) * radius) + 'px';
+                    petal.style.top = (10 + Math.sin(angle) * radius) + 'px';
+                    flower.appendChild(petal);
+                }
+
+                const center = document.createElement('div');
+                center.className = 'center';
+                flower.appendChild(center);
+
+                container.appendChild(flower);
+            });
+        })();
+
+        // ============================================================
+        // 3. 信封交互
+        // ============================================================
+        const envelopeWrapper = document.getElementById('envelopeWrapper');
+        const envelopeFlap = document.getElementById('envelopeFlap');
+        const sticker = document.getElementById('sticker');
+        const letterOverlay = document.getElementById('letterOverlay');
+        const closeBtn = document.getElementById('closeBtn');
+        const hint = document.getElementById('hint');
+        const bgMusic = document.getElementById('bgMusic');
+        let isOpen = false;
+        let musicStarted = false;
+
+        // 预加载音频
+        bgMusic.load();
+
+        function openEnvelope() {
+            if (isOpen) return;
+            isOpen = true;
+
+            // 翻盖打开
+            envelopeFlap.classList.add('open');
+            sticker.classList.add('hidden');
+            hint.style.opacity = '0';
+
+            // 延迟弹出信纸（等翻盖动画进行到一半）
+            setTimeout(() => {
+                letterOverlay.classList.add('show');
+            }, 500);
+
+            // 开始播放音乐
+            if (!musicStarted) {
+                bgMusic.currentTime = 0;
+                bgMusic.play().then(function() {
+                    musicStarted = true;
+                }).catch(function(err) {
+                    console.log('音乐播放受限:', err);
+                });
+            }
+        }
+
+        function closeEnvelope() {
+            if (!isOpen) return;
+
+            // 先关闭信纸弹窗
+            letterOverlay.classList.remove('show');
+
+            // 等弹窗关闭动画完成后，合上信封
+            setTimeout(function() {
+                envelopeFlap.classList.remove('open');
+                sticker.classList.remove('hidden');
+                hint.style.opacity = '1';
+                isOpen = false;
+            }, 400);
+        }
+
+        // 点击信封打开
+        envelopeWrapper.addEventListener('click', function(e) {
+            if (e.target.closest('.letter-close-btn')) return;
+            if (!isOpen) {
+                openEnvelope();
+            }
+        });
+
+        // 点击弹窗背景（信纸外部区域）关闭
+        letterOverlay.addEventListener('click', function(e) {
+            if (e.target === letterOverlay) {
+                closeEnvelope();
+            }
+        });
+
+        // 点击关闭按钮
+        closeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeEnvelope();
+        });
+
+        // 键盘 Escape 关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isOpen) {
+                closeEnvelope();
+            }
+        });
+
+        // 触摸滑动不触发关闭
+        let touchStartY = 0;
+        letterOverlay.addEventListener('touchstart', function(e) {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        // ============================================================
+        // 4. 额外：点击页面任意位置重试播放
+        // ============================================================
+        document.addEventListener('click', function() {
+            if (!musicStarted && bgMusic.paused) {
+                bgMusic.play().then(function() {
+                    musicStarted = true;
+                }).catch(function() {});
+            }
+        });
+    </script>
+</body>
+</html>
